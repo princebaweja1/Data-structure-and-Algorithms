@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define module 1000000007
+#define pb push_back
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL);                        
+#define bs binary_search
+#define mp make_pair
+#define endl '\n'
+#define Endl '\n'
+
+#define vi vector<int>
+#define vll vector<long long>
+#define ss string
+
+
+
+
+void dfs(vi* g,int n,int sv,bool* vis,stack<int>&s1)
+{
+	vis[sv]=true;
+			
+	for(auto i: g[sv])
+	{
+		if(!vis[i])
+		{
+			dfs(g,n,i,vis,s1);
+		}
+	}
+	s1.push(sv);
+}
+
+void topological(vi* g,int n)
+{
+	bool* vis=new bool[n+3]();
+	stack<int>s1;
+	
+	for(int i=0;i<n;i++)
+	{
+		if(!vis[i])
+		{
+			dfs(g,n,i,vis,s1);
+		}
+	}
+	
+	cout<<"Topological sort : ";
+	while(!s1.empty())
+	{
+		cout<<s1.top()<<" ";
+		s1.pop();
+	}
+}
+
+int main()
+{
+	ll i,j,n,q,y,t,x,p,e;
+	
+	cin>>n>>e;
+	
+	vi* g=new vi[n+3];
+	
+	for(i=0;i<e;i++)
+	{
+		cin>>x>>y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	
+	int sv=0;
+	topological(g,n);
+}
+
