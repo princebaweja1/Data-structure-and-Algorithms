@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define module 1000000007
+#define pb push_back
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL);                        
+#define bs binary_search
+#define mp make_pair
+#define endl '\n'
+#define Endl '\n'
+
+#define vi vector<int>
+#define vll vector<long long>
+#define ss string
+
+#define mi map<int,int>
+#define mll map<long long,long long>
+#define mb map<int,bool>
+#define ms map<string,int>
+#define map1 unordered_map<ll,ll>
+#define cmap unordered_map<char,int>
+
+#define dev(x) cout<<x<<endl
+#define dev2(x,y) cout<<x<<" "<<y<<endl
+#define dev3(x,y,z) cout<<x<<" "<<y<<" "<<z<<endl
+#define read(x) cin>>x;
+#define read2(x,y) cin>>x>>y;
+#define vp vector<pair<int,int>>
+
+int getMin(int n,int* dis,bool* vis)
+{
+	int min1=-1,i;
+	for(i=0;i<n;i++)
+	{
+		if(!vis[i] && (min1==-1 || dis[i] < dis[min1]))
+			min1=i;
+	}
+	return min1;
+}
+void dijkstra(int sv,vp* g,int n)
+{
+	if(n==0)
+		return;
+	
+	bool* vis=new bool[n+3]();
+	int* dis=new int[n+3];
+	int i,j,p,w;
+	
+	for(i=1;i<n;i++)
+		dis[i]=INT_MAX;
+	dis[sv]=0;		
+	
+	i=0; int dest;
+	while(i < n)
+	{
+		int min1=getMin(n,dis,vis);
+		vis[min1]=true;
+		for(auto j : g[min1])
+		{
+			dest=j.first;
+			w=j.second;
+			if(!vis[dest] && ( dis[dest] > w + dis[min1] )  )
+			{
+				dis[dest] = w + dis[min1];
+			}
+		}
+		i++;
+	}
+	
+	
+	cout<<"Shortest Path from "<<sv<<" :  \n";
+	for(i=0;i<n;i++)
+		cout<<i<<" "<<dis[i]<<endl;
+}
+
+int main()
+{
+	int i,j,n,m,e,w,x,y;
+	cin>>n>>e;
+	
+	vp* g=new vp[n+3];
+	for(i=0;i<e;i++)
+	{
+		cin>>x>>y>>w;
+		g[x].pb({y,w});
+		g[y].pb({x,w});
+	}
+	int sv=0;
+	dijkstra(sv,g,n);
+}
