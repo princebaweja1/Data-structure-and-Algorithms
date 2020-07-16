@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include<iostream>
+#include<map>
+#include<tuple>
+#include<vector>
+#define ll long long
+#define module 1000000007
+#define pb push_back
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL);
+ 
+#define vi vector<int>
+#define vll vector<long long>
+#define iPair pair<int,int>
+#define vpp vector<pair<int,int>>
+
+void shortest(vpp* g,int n,int sv)
+{
+	set<pair<int,int>>s;
+	vector<int>dis(n+2,INT_MAX);
+	dis[sv]=0;
+	s.insert(make_pair(0,sv));
+	int min1,v,w,i;
+	while(!s.empty())
+	{
+		
+		auto it=s.begin();
+		
+		min1=it->second;
+		s.erase(it);
+		for(auto x : g[min1])
+		{
+			v=x.first;
+			w=x.second;
+			
+			if(dis[v] > (dis[min1]+w) )
+			{
+				if(dis[v]!=INT_MAX)
+				{
+					s.erase(s.find(make_pair(dis[v],v)));
+				}
+				dis[v] = dis[min1] + w ;
+				s.insert(make_pair(dis[v],v));
+			}
+		}
+	}
+	for(i=0;i<n;i++)
+		cout<<i<<"   "<<dis[i]<<"\n";
+}
+int main()
+{	int n,m,u,v,i,w;
+	cin>>n>>m;
+	
+	vpp* g=new vpp[n+3];
+	for(i=1;i<=m;i++){
+		cin>>u>>v>>w;
+		g[u].pb(make_pair(v,w));
+		g[v].pb(make_pair(u,w));
+	}
+	shortest(g,n,0);
+}
