@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include<iostream>
+#include<map>
+#include<tuple>
+#include<vector>
+#define ll long long
+#define module 1000000007
+#define pb push_back
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL);
+ 
+#define vi vector<int>
+#define vll vector<long long>
+#define iPair pair<int,int>
+#define vpp vector<pair<int,int>>
+
+djAlgo(vpp* g,int n,int m,int sv)
+{
+	priority_queue< iPair, vector <iPair> , greater<iPair> > pq; 
+	
+	vector<int> dis(n+2,INT_MAX);
+	dis[sv]=0;
+	
+	pq.push(make_pair(0,sv));
+	
+	int i=0,v,x,w,min1;
+	while(!pq.empty() )
+	{
+	//	cout<<"lol\n";
+		int min1=pq.top().second;
+		pq.pop();
+		for(auto it=g[min1].begin();it!=g[min1].end();it++)
+		{
+			v=it->first;
+			w=it->second;
+			
+			if(dis[v] > dis[min1] + w )
+			{
+				dis[v] = dis[min1] + w;
+				pq.push(make_pair(dis[v],v));
+			}
+		}
+	}
+	cout<<"Shortest Path from "<<sv<<"  :  \n";
+	for(i=0;i<n;i++)
+		cout<<i<<" "<<dis[i]<<endl;;
+	
+}
+int main()
+{
+	int n,m,u,v,i,w;
+	cin>>n>>m;
+	vpp* g=new vpp[n+3];
+	for(i=1;i<=m;i++){
+		cin>>u>>v>>w;
+		g[u].pb(make_pair(v,w));
+		g[v].pb(make_pair(u,w));
+	}
+	
+	djAlgo(g,n,m,0);
+}
